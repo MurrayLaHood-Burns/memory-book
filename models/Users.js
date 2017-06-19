@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+var fs = require('fs');
 //var debug = require('debug')('memory-book:server');
 
 var UserSchema = new mongoose.Schema({
@@ -37,7 +38,7 @@ UserSchema.methods.generateJWT = function() {
     _id: this._id,
     username: this.username,
     exp: parseInt(exp.getTime() / 1000),
-  }, 'SECRET'); /*FIX THIS*/
+  }, fs.readFileSync('.jwt-key/key'); /*FIX THIS*/
 };
 
 mongoose.model('User', UserSchema);
