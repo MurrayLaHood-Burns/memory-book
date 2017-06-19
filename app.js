@@ -11,6 +11,7 @@ var passport = require('passport');
 
 require('./models/Users');
 require('./models/People');
+require('./models/Relations');
 require('./models/Albums');
 require('./models/Memories');
 require('./models/Comments');

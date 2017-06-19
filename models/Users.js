@@ -7,11 +7,12 @@ var fs = require('fs');
 var UserSchema = new mongoose.Schema({
   email: {type: String, lowercase: true, unique: true},
   hash: String,
-  salt: String
-  person: {type:mongoose.Schema.Types.ObjectId, ref: 'person' }
-  peopleCreated: [{type:mongoose.Schema.Types.ObjectId, ref: 'person' }]
-  albumsCreated: [{type:mongoose.Schema.Types.ObjectId, ref: 'album' }]
-  memoriesUploaded: [{type:mongoose.Schema.Types.ObjectId, ref: 'memory' }]
+  salt: String,
+  joined: Date,
+  person: {type:mongoose.Schema.Types.ObjectId, ref: 'person' },
+  peopleCreated: [{type:mongoose.Schema.Types.ObjectId, ref: 'person' }],
+  albumsCreated: [{type:mongoose.Schema.Types.ObjectId, ref: 'album' }],
+  memoriesUploaded: [{type:mongoose.Schema.Types.ObjectId, ref: 'memory' }],
   commentsPosted: [{type:mongoose.Schema.Types.ObjectId, ref: 'comment' }]
 });
 
@@ -38,8 +39,8 @@ UserSchema.methods.generateJWT = function() {
     _id: this._id,
     username: this.username,
     exp: parseInt(exp.getTime() / 1000),
-  }, fs.readFileSync('.jwt-key/key'); /*FIX THIS*/
+  }, fs.readFileSync('.jwt-key/key'));
 };
 
-mongoose.model('User', UserSchema);
+mongoose.model('user', UserSchema);
 

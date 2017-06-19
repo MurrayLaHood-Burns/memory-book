@@ -1,4 +1,5 @@
 var express = require('express');
+var jwt = require('express-jwt');
 var fs = require('fs');
 var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'});
 var router = express.Router();
