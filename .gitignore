@@ -1,5 +1,6 @@
 node_modules/
 .sslcert
 *.swp
+*.swo
 .jwt-key
 Memories
