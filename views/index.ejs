@@ -7,22 +7,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/color.css' />
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+  <script src="/javascripts/appConfig.js"></script>
+  <script src="/javascripts/homeCtrl.js"></script>
+  <script src="/javascripts/navCtrl.js"></script>
+  <script src="/javascripts/authCtrl.js"></script>
+  <script src="/javascripts/authFactory.js"></script>
 </head>
 
-<body ng-app="memoryBook">
+<body ng-app="memoryBook" class="grey-800">
   
 <% include navbar %>
   
-<div class="container">
+<div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-      Hello
+      <ui-view></ui-view>
+    </div>
   </div>
 </div>
+
+<script type="text/ng-template" id="/home.html">
+  <% include home %>
+</script>
+
+<script type="text/ng-template" id="/login.html">
+  <% include login %>
+</script>
+
+<script type="text/ng-template" id="/register.html">
+  <% include register %>
+</script>
 
 </body>
 
