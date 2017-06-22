@@ -32,7 +32,15 @@ app.config([
             $state.go('home');
           }
         }]
+
+      })
+
+      .state('upload', {
+        url: '/upload',
+        templateUrl: '/upload.html',
+        controller: 'UploadCtrl',
       });
+  
 
     $urlRouterProvider.otherwise('home');
   }
