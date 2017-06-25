@@ -17,13 +17,13 @@ router.get('/', function(req, res, next) {
 /* POST sign up */
 router.post('/register', function(req, res, next) {
   // error check fields
-  if(!req.body.email || !req.body.password){
+  if(!req.body.username || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
 
   var user = new User();
 
-  user.email = req.body.email;
+  user.username = req.body.username;
   user.setPassword(req.body.password);
 
   user.save(function (err){
@@ -32,7 +32,7 @@ router.post('/register', function(req, res, next) {
       return next(err);
     }
 
-    debug('New user saved! : ' + user.email);
+    debug('New user saved! : ' + user.username);
     return res.json({token: user.generateJWT()})
   });
 });
@@ -44,6 +44,7 @@ router.post('/login', function(req, res, next){
   }
 
   passport.authenticate('local', function(err, user, info){
+
     if(err){ return next(err); }
 
     if(!user){ return res.status(401).json(info); }

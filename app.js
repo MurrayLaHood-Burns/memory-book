@@ -15,6 +15,7 @@ require('./models/Relations');
 require('./models/Albums');
 require('./models/Memories');
 require('./models/Comments');
+require('./config/passport');
 
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/memory-book');
