@@ -17,14 +17,17 @@ router.get('/', function(req, res, next) {
 /* POST sign up */
 router.post('/register', function(req, res, next) {
   // error check fields
-  if(!req.body.username || !req.body.password){
+  if(!req.body.username || !req.body.email || !req.body.password){
     return res.status(400).json({message: 'Please fill out all fields'});
   }
 
   var user = new User();
 
   user.username = req.body.username;
+  user.email = req.body.email;
   user.setPassword(req.body.password);
+  user.joined = Date.now();
+
 
   user.save(function (err){
     if(err) {
@@ -32,7 +35,7 @@ router.post('/register', function(req, res, next) {
       return next(err);
     }
 
-    debug('New user saved! : ' + user.username);
+    debug(user.username + ' joined with email ' + user.email + ' on ' + user.joined);
     return res.json({token: user.generateJWT()})
   });
 });

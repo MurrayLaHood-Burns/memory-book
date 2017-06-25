@@ -6,14 +6,12 @@ var fs = require('fs');
 
 var UserSchema = new mongoose.Schema({
   username: {type: String, lowercase: true, unique: true},
+  email: {type: String, lowercase: true, unique: true},
   hash: String,
   salt: String,
   joined: Date,
-  person: {type:mongoose.Schema.Types.ObjectId, ref: 'person' },
-  peopleCreated: [{type:mongoose.Schema.Types.ObjectId, ref: 'person' }],
-  albumsCreated: [{type:mongoose.Schema.Types.ObjectId, ref: 'album' }],
-  memoriesUploaded: [{type:mongoose.Schema.Types.ObjectId, ref: 'memory' }],
-  commentsPosted: [{type:mongoose.Schema.Types.ObjectId, ref: 'comment' }]
+  albums: [{type:mongoose.Schema.Types.ObjectId, ref: 'album' }],
+  comments: [{type:mongoose.Schema.Types.ObjectId, ref: 'comment' }]
 });
 
 UserSchema.methods.setPassword = function(password){
