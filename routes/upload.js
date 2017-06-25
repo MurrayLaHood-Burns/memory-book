@@ -9,9 +9,13 @@ var router = express.Router();
 var debug = require('debug')('memory-book:server');
 var path = require('path');
 var multer = require('multer');
+
 var upload = multer({
   dest: path.join(__dirname, '../public/upload/temp'),
   fileFilter: function fileFilter (req, file, cb) {
+
+    debug("Entering file filter\n");
+
     var ext = file.originalname.substr(file.originalname.lastIndexOf('.') + 1);
     
     // no extension
@@ -20,7 +24,7 @@ var upload = multer({
       cb(null, false);
     }
 
-    ext = ext.toLower();
+    ext = ext.toLowerCase();
 
     switch(ext)
     {
@@ -38,12 +42,16 @@ var upload = multer({
 });
 
 /* POST upload */
-router.post('/', upload.array('photos', 50), function(req, res, next) {
-  if( !req.files || req.files ){
+router.post('/', upload.array('files', 50), function(req, res, next) {
+  
+  debug("Post upload");
+  
+  if( !req.files || req.files.length === 0 ){
     return res.status(400).json({message:'No files uploaded. Select files with a \".jpg\", \".jpeg\", \".gif\", or \".png\" extension\n 1 MB filesize limit'});
   }
 
 
+  res.end();
 
 });
 
