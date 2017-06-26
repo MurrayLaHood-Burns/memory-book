@@ -24,6 +24,7 @@ mongoose.connect('mongodb://localhost/memory-book');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var upload = require('./routes/upload');
+var albums = require('./routes/albums');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use(passport.initialize());
 app.use('/', index);
 app.use('/users', users);
 app.use('/upload', upload);
+app.use('/albums', albums);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

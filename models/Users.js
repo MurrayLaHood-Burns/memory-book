@@ -5,13 +5,25 @@ var fs = require('fs');
 //var debug = require('debug')('memory-book:server');
 
 var UserSchema = new mongoose.Schema({
-  username: {type: String, lowercase: true, unique: true},
-  email: {type: String, lowercase: true, unique: true},
+  username: {
+    type: String,
+    lowercase: true,
+    unique: true},
+  email: {
+    type: String, 
+    lowercase: true, 
+    unique: true},
   hash: String,
   salt: String,
-  joined: Date,
-  albums: [{type:mongoose.Schema.Types.ObjectId, ref: 'album' }],
-  comments: [{type:mongoose.Schema.Types.ObjectId, ref: 'comment' }]
+  joined: {
+    type: Date,
+    default: Date.now},
+  albums: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'album' }],
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'comment' }]
 });
 
 UserSchema.methods.setPassword = function(password){
@@ -40,5 +52,5 @@ UserSchema.methods.generateJWT = function() {
   }, fs.readFileSync('.jwt-key/key'));
 };
 
-mongoose.model('user', UserSchema);
+mongoose.model('User', UserSchema);
 

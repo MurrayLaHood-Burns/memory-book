@@ -2,9 +2,16 @@ var mongoose = require('mongoose');
 
 var AlbumSchema = new mongoose.Schema({
   title: String,
-  memories: [{type:mongoose.Schema.Types.ObjectId, ref: 'memory'}],
-  createdBy: {type:mongoose.Schema.Types.ObjectId, ref: 'user'},
-  createdOn: Date
+  tags: [String],
+  memories: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'memory'}],
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'user'},
+  createdOn: {
+    type: Date,
+    default: Date.now}
 });
 
-mongoose.model('album', AlbumSchema);
+mongoose.model('Album', AlbumSchema);

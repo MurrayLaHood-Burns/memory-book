@@ -39,6 +39,17 @@ app.config([
         url: '/upload',
         templateUrl: '/upload.html',
         controller: 'UploadCtrl',
+      })
+
+      .state('albums', {
+        url: '/albums',
+        templateUrl: '/albums.html',
+        controller: 'AlbumCtrl',
+        resolve: {
+          postPromise: ['albums', function(albums) {
+            return albums.getAll();
+          }]
+        }
       });
   
 
