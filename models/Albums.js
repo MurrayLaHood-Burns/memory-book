@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 var AlbumSchema = new mongoose.Schema({
   title: String,
-  tags: [String],
+  tags: [{
+    type: String}],
   memories: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'memory'}],
