@@ -6,7 +6,7 @@ var fs = require('fs');
 var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'});
 var debug = require('debug')('memory-book:server');
 var router = express.Router();
-var filters = require("my_modules/filters");
+var filters = require('my_modules/filters');
 
 /* GET albums for user */
 router.get('/', function(req, res, next) {
@@ -38,10 +38,12 @@ router.get('/:album', function(req, res) {
 /* PUT album tags */
 router.put('/:album/tags', function(req, res, next) {
 
-  req.album.tags = req.album.tags.concat(req.body.tags);
-  req.album.tags = req.album.tags.filter(filters.notNull)
+  req.album.tags = req.album.tags.concat(req.body.tags)
+    .filter(filters.notNull)
+    .filter(filters.onlyStrings)
     .filter(filters.onlyAlphanumeric)
-    .filter(onlyUnique);
+    .filter(filters.onlyUnique);
+
   req.album.save(function(err, album) {
     if(err){ return next(err); }
 
