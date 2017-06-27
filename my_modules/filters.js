@@ -5,8 +5,8 @@ var filters = {
     return passed;
   },
 
-  noSymbols: function (currentValue){
-    var patt = new RegExp("/^[a-z0-9]+$/i");
+  onlyAlphanumeric: function (currentValue){
+    var patt = /^[a-z0-9]+$/i;
     var passed = patt.test(currentValue);
     return passed;
   },

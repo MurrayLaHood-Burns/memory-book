@@ -17,4 +17,49 @@ describe("String Array Filters", function() {
       expect(actual3).to.deep.equal(["one", "two"]);
     });
   });
+  describe("Filter only alphanumeric", function() {
+    it("allows strings with only numbers", function() {
+      var case1 = "1994";
+
+      var actual1 = filters.onlyAlphanumeric(case1);
+
+      expect(actual1).to.equal(true);
+    });
+    it("allows strings with only letters", function() {
+      var case1 = "abc";
+
+      var actual1 = filters.onlyAlphanumeric(case1);
+
+      expect(actual1).to.equal(true);
+    });
+    it("allows strings with letters and numbers", function() {
+      var case1 = "abc1994";
+
+      var actual1 = filters.onlyAlphanumeric(case1);
+
+      expect(actual1).to.equal(true);
+    });
+    it("blocks symbols and whitespace", function() {
+      var case1 = "1994*";
+      var case2 = "1994 abc";
+
+      var actual1 = filters.onlyAlphanumeric(case1);
+      var actual2 = filters.onlyAlphanumeric(case2);
+
+      expect(actual1).to.equal(false);
+      expect(actual2).to.equal(false);
+    });
+  });
+  describe("Filter not null", function() {
+    it("blocks null and allows not null", function() {
+      var case1 = null;
+      var case2 = "notnull";
+
+      var actual1 = filters.notNull(case1);
+      var actual2 = filters.notNull(case2);
+
+      expect(actual1).to.equal(false);
+      expect(actual2).to.equal(true);
+    });
+  });
 });
