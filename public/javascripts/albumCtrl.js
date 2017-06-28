@@ -7,8 +7,7 @@ app.controller('AlbumCtrl', [
 
   function($scope, auth, albums) {
     
-    $scope.getAlbums = function(){
-      albums.getAll();
-    };
+    $scope.albums = albums.albums;
+    
   }
 ]);
