@@ -10,10 +10,10 @@
 </div>
 <br>
 <div class="d-flex flex-column justify-content-center p-2">
-  <form class="form">
+  <form class="form" ng-submit="createAlbum()">
     <label for="newAlbum">New album</label>
     <div class="input-group" id="newAlbum">
-      <input type="text" class="form-control" placeholder="Title"/>
+      <input type="text" class="form-control" ng-model="title" placeholder="Title"/>
       <span class="input-group-btn">
         <button class="btn btn-secondary" type="submit">
           Create

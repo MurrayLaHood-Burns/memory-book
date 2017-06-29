@@ -9,5 +9,13 @@ app.controller('AlbumCtrl', [
     
     $scope.albums = albums.albums;
     
+    $scope.createAlbum = function() {
+    
+      if(!$scope.title || $scope.title === '') { return; }
+      albums.create({
+        title: $scope.title
+      });
+      $scope.title = '';
+    };
   }
 ]);

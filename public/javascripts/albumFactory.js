@@ -16,7 +16,7 @@ function($http, auth){
   };
 
   o.create = function(album) {
-    return $http.post('/albums', album, {
+    return $http.post('/users/' + auth.currentUser() + '/albums', album, {
       headers: {authorization: 'Bearer ' + auth.getToken()}
     }).success(function(data) {
       o.albums.push(data);
