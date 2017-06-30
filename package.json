@@ -25,6 +25,7 @@
     "passport-local": "^1.0.0",
     "request": "^2.81.0",
     "serve-favicon": "~2.4.2",
+    "superagent": "^3.5.2",
     "supertest": "^3.0.0"
   },
   "devDependencies": {
