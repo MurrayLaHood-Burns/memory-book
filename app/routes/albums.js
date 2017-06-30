@@ -7,7 +7,7 @@ var fs = require('fs');
 var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'});
 var debug = require('debug')('memory-book:server');
 var router = express.Router();
-var filters = require('my_modules/filters');
+var filters = require('filters');
 
 /* GET albums for user */
 router.get('/', function(req, res, next) {

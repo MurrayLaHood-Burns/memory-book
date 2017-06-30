@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var filters = require('my_modules/filters');
+var filters = require('filters');
 
 describe('String Array Filters', function() {
   describe('Filter only unique', function() {

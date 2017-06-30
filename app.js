@@ -9,22 +9,22 @@ var passport = require('passport');
 
 // database setup
 
-require('./models/Users');
-require('./models/People');
-require('./models/Relations');
-require('./models/Albums');
-require('./models/Memories');
-require('./models/Comments');
-require('./config/passport');
+require('./app/models/Users');
+require('./app/models/People');
+require('./app/models/Relations');
+require('./app/models/Albums');
+require('./app/models/Memories');
+require('./app/models/Comments');
+require('./app/config/passport');
 
 mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/memory-book');
 
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-var upload = require('./routes/upload');
-var albums = require('./routes/albums');
+var index = require('./app/routes/index');
+var users = require('./app/routes/users');
+var upload = require('./app/routes/upload');
+var albums = require('./app/routes/albums');
 
 var app = express();
 
