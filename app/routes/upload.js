@@ -10,8 +10,15 @@ var debug = require('debug')('memory-book:server');
 var path = require('path');
 var multer = require('multer');
 
+var imagePath;
+
+if(process.env.NODE_ENV === 'test')
+  imagePath = '../public/images/memories-test';
+else
+  imagePath = '../public/images/memories';
+
 var upload = multer({
-  dest: path.join(__dirname, '../public/upload/temp'),
+  dest: path.join(__dirname, imagePath),
   fileFilter: function fileFilter (req, file, cb) {
 
     debug("Entering file filter\n");

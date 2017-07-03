@@ -6,7 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-
+var debug = require('debug')('memory-book:server');
+ 
 // database setup
 
 require('./app/models/Users');
@@ -18,7 +19,16 @@ require('./app/models/Comments');
 require('./app/config/passport');
 
 mongoose.Promise = require('bluebird');
-mongoose.connect('mongodb://localhost/memory-book');
+var dbUri;
+if(process.env.NODE_ENV === 'test'){
+  debug('Connecting to test database');
+  dbUri = 'mongodb://localhost/memory-book-test';
+} else {
+  debug('Connecting to live database');
+  dbUri = 'mongodb://localhost/memory-book';
+}
+
+mongoose.connect(dbUri);
 
 
 var index = require('./app/routes/index');

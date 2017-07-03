@@ -3,7 +3,7 @@ var app = require('../app');
 var request = require('supertest')(app);
 var baseUrl = 'http://localhost:8080';
 
-describe('User Routes', function() {
+describe('Album Routes', function() {
   var authHeader;
   before(function(done) {
     request.post('/login')
@@ -17,13 +17,11 @@ describe('User Routes', function() {
       done();
     });
   });
-  describe('POST users albums', function(){
+  describe('GET albums', function(){
 
-    it('returns status 200', function(done) {
-      request.post('/users/murray/albums')
-        .send({
-          title: 'test'})
-        .set('authorization', authHeader)
+    it('responds with json', function(done) {
+      request.get('/albums')
+        .expect('Content-Type', /json/)
         .expect(200, done);
     });
   });
