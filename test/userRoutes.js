@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var app = require('../app');
 var request = require('supertest')(app);
 
-describe('User Routes', function() {
+/*describe('User Routes', function() {
   var authHeader;
   before(function(done) {
     request.post('/login')
@@ -26,4 +26,4 @@ describe('User Routes', function() {
         .expect(200, done);
     });
   });
-});
+});*/
