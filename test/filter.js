@@ -17,6 +17,7 @@ describe('String Array Filters', function() {
       expect(actual3).to.deep.equal(['one', 'two']);
     });
   });
+
   describe('Filter only alphanumeric', function() {
     it('allows strings with only numbers', function() {
       var case1 = '1994';
@@ -50,18 +51,7 @@ describe('String Array Filters', function() {
       expect(actual2).to.equal(false);
     });
   });
-  describe('Filter not null', function() {
-    it('blocks null and allows not null', function() {
-      var case1 = null;
-      var case2 = 'notnull';
 
-      var actual1 = filters.notNull(case1);
-      var actual2 = filters.notNull(case2);
-
-      expect(actual1).to.equal(false);
-      expect(actual2).to.equal(true);
-    });
-  });
   describe('Filter only strings', function() {
     it('allows only values with datatype string', function() {
       var case1 = 'string';
@@ -75,6 +65,52 @@ describe('String Array Filters', function() {
       expect(actual1).to.equal(true);
       expect(actual2).to.equal(false);
       expect(actual3).to.equal(false);
+    });
+  });
+
+  describe('Filter only email', function() {
+    it('allows only values in email format', function() {
+      var case1 = 'string';
+      var case2 = '@string';
+      var case3 = 'string@';
+      var case4 = 'string@email';
+      var case5 = 'string@email.com';
+
+      var actual1 = filters.onlyEmail(case1);
+      var actual2 = filters.onlyEmail(case2);
+      var actual3 = filters.onlyEmail(case3);
+      var actual4 = filters.onlyEmail(case4);
+      var actual5 = filters.onlyEmail(case5);
+
+      expect(actual1).to.equal(false);
+      expect(actual2).to.equal(false);
+      expect(actual3).to.equal(false);
+      expect(actual4).to.equal(false);
+      expect(actual5).to.equal(true);
+    });
+  });
+
+  describe('Filter not whitespace', function() {
+    it('allows values with at least one character', function() {
+      var case1 = '        a';
+      var case2 = ' a';
+
+      var actual1 = filters.notWhitespace(case1);
+      var actual2 = filters.notWhitespace(case2);
+
+      expect(actual1).to.equal(true);
+      expect(actual2).to.equal(true);
+    });
+    it('blocks pure whitespace strings', function() {
+      var case1 = '        ';
+      var case2 = ' ';
+
+      var actual1 = filters.notWhitespace(case1);
+      var actual2 = filters.notWhitespace(case2);
+
+      expect(actual1).to.equal(false);
+      expect(actual2).to.equal(false);
+
     });
   });
 });
