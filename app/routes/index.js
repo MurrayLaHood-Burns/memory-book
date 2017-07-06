@@ -16,10 +16,19 @@ router.get('/', function(req, res, next) {
 
 /* POST sign up */
 router.post('/register', function(req, res, next) {
+  var error = {messages:[]};
+
   // error check fields
   if(!req.body.username || !req.body.email || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
+    return res.status(400).json({messages: ['Please fill out all fields']});
   }
+
+  User.findOne({'username' : req.body.username}, function(err, user){
+    if(err){}
+
+  
+});
+
 
   var user = new User();
 
@@ -30,14 +39,20 @@ router.post('/register', function(req, res, next) {
 
   user.save(function (err){
     if(err) {
+      if(err.code === 11000)
+      {
       debug('Failed to save user: ' + err);
       return next(err);
+      }
     }
 
     debug(user.username + ' joined with email ' + user.email + ' on ' + user.joined);
     return res.json({token: user.generateJWT()})
   });
-});
+
+  
+    return res.status(400).json({message: 'Please fill out all fields'});
+  });
 
 /* POST sign in */
 router.post('/login', function(req, res, next){

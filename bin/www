@@ -5,10 +5,10 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('memory-book:server');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
+var logger = require('../app/node_modules/logger');
 
 /**
  * Get port from environment and store in Express.
@@ -101,7 +101,7 @@ function onListeningHTTP() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 }
 
 /**
@@ -113,5 +113,5 @@ function onListeningHTTPS() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 }

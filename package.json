@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "devstart": "nodemon ./bin/www",
-    "test": "NODE_ENV=test ./node_modules/.bin/mocha --reporter spec"
+    "start": "NODE_ENV=live LOG_LEVEL=info node ./bin/www",
+    "devstart": "NODE_ENV=dev LOG_LEVEL=debug nodemon ./bin/www",
+    "test": "NODE_ENV=test LOG_LEVEL=warn ./node_modules/.bin/mocha --reporter spec"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
@@ -25,8 +25,11 @@
     "passport-local": "^1.0.0",
     "request": "^2.81.0",
     "serve-favicon": "~2.4.2",
+    "should": "^11.2.1",
     "superagent": "^3.5.2",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "winston": "^2.3.1",
+    "winston-daily-rotate-file": "^1.4.6"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

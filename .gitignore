@@ -2,5 +2,10 @@ node_modules/*
 .sslcert
 *.swp
 *.swo
+*.swn
 .jwt-key
-Memories
+memories-dev
+memories-live
+memories-test
+log/*
+

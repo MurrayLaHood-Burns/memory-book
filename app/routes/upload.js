@@ -10,12 +10,7 @@ var debug = require('debug')('memory-book:server');
 var path = require('path');
 var multer = require('multer');
 
-var imagePath;
-
-if(process.env.NODE_ENV === 'test')
-  imagePath = '../public/images/memories-test';
-else
-  imagePath = '../public/images/memories';
+var imagePath = '../public/images/memories-' + process.env.NODE_ENV;
 
 var upload = multer({
   dest: path.join(__dirname, imagePath),
