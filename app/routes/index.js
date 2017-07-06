@@ -60,13 +60,19 @@ router.post('/register', function(req, res, next) {
         });
 
         return res.status(400).json({message: 'Sorry! Username ' + req.body.username + ' is taken'});
-      }
-      else if(user.email === req.body.email){
+      } else if(user.email === req.body.email){
         logger.warn(logTag, req.body.email + ' is already being used', {
           email : user.email
         });
 
         return res.status(400).json({message: req.body.email + ' is already being used'});
+      } else {
+        logger.error(logTag, 'what?', {
+          username: user.username,
+          email: user.email
+        });
+
+        return res.status(400).json({message: 'We\'re having trouble handling your request, please try again later'});
       }
     }
   
