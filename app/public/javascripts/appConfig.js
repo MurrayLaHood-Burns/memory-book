@@ -45,6 +45,11 @@ app.config([
         url: '/albums',
         templateUrl: '/albums.html',
         controller: 'AlbumCtrl',
+        onEnter: ['$state', 'auth', function($state, auth){
+          if(!auth.isLoggedIn()){
+            $state.go('home');
+          }
+        }],
         resolve: {
           postPromise: ['albums', function(albums) {
             return albums.getAll();
