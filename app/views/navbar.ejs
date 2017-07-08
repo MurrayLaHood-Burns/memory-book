@@ -7,14 +7,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand" href="#">Memory Book</a>
+    <a class="navbar-brand" href="#" data-toggle="collapse" data-target=".navbar-collapse.show">Memory Book</a>
 
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <form class="form-inline my-2 my-lg-0 ml-auto">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Search"/>
           <span class="input-group-btn" id="search-button">
-            <button class="btn btn-secondary" type="submit">
+            <button class="btn btn-secondary" type="submit" data-toggle="collapse" data-target=".navbar-collapse.show">
               <i class="fa fa-search" ></i>
             </button>
           </span>
@@ -24,7 +24,7 @@
       <form class="form-inline" ng-show="isLoggedIn()">
         <div class="input-group my-2 my-lg-0 mx-lg-2">
           <span class="input-group-btn">
-            <a class="btn btn-primary" href="/#/albums" role="button">
+            <a class="btn btn-primary" href="/#/albums" role="button" data-toggle="collapse" data-target=".navbar-collapse.show">
               My Albums
             </a>
           </span>
@@ -33,9 +33,9 @@
 
       <div class="navbar-nav ml-auto">
         <a ng-show="isLoggedIn()" class="nav-item nav-link mx-lg-2">{{currentUser()}}</a>
-        <a ng-show="isLoggedIn()" class="nav-item nav-link mx-lg-2" href="" ng-click="logOut()">Log Out</a>
-        <a ng-hide="isLoggedIn()" class="nav-item nav-link mx-lg-2" href="/#/login">Log In</a>
-        <a ng-hide="isLoggedIn()" class="nav-item nav-link mx-lg-2" href="/#/register">Register</a>
+        <a ng-show="isLoggedIn()" class="nav-item nav-link mx-lg-2" href="" ng-click="logOut()" data-toggle="collapse" data-target=".navbar-collapse.show">Log Out</a>
+        <a ng-hide="isLoggedIn()" class="nav-item nav-link mx-lg-2" href="/#/login" data-toggle="collapse" data-target=".navbar-collapse.show">Log In</a>
+        <a ng-hide="isLoggedIn()" class="nav-item nav-link mx-lg-2" href="/#/register" data-toggle="collapse" data-target=".navbar-collapse.show">Register</a>
       </div>
     </div>
   </div>
