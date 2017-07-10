@@ -8,6 +8,7 @@ app.controller('AlbumCtrl', [
   function($scope, auth, albums) {
     
     $scope.albums = albums.albums;
+    $scope.currentAlbum = albums.currentAlbum;
     
     $scope.createAlbum = function() {
     

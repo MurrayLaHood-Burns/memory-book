@@ -1,0 +1,24 @@
+<br>
+<div ng-repeat="album in albums | orderBy: 'createdOn' ">
+  <div class="d-flex justify-content-start p-2 separator-bottom">
+    <h3>{{album.title}}</h3>
+    <button class="btn btn-primary ml-auto">
+      <i class="fa fa-pencil"></i>
+      Edit 
+    </button>
+  </div>
+</div>
+<br>
+<div class="d-flex flex-column justify-content-center p-2">
+  <form class="form" ng-submit="createAlbum()">
+    <label for="newAlbum">New album</label>
+    <div class="input-group" id="newAlbum">
+      <input type="text" class="form-control" ng-model="title" placeholder="Title"/>
+      <span class="input-group-btn">
+        <button class="btn btn-secondary" type="submit">
+          Create
+        </button>
+      </span>
+    </div>
+  </form>
+</div>

@@ -4,7 +4,8 @@ app.factory('albums', ['$http', 'auth',
 function($http, auth){
 
   var o = {
-    albums: []
+    albums: [],
+    currentAlbum: null
   };
 
   o.getAll = function() {
@@ -31,10 +32,9 @@ function($http, auth){
     });
   };
 
-
   o.get = function(id) {
-    return $http.get('/albums/' + id).then(function(res){
-      return res.data;
+    return $http.get('/albums/' + id).success(function(data){
+      angular.copy(data, o.currentAlbum);
     });
   };
 

@@ -41,9 +41,9 @@ app.config([
         controller: 'UploadCtrl',
       })
 
-      .state('albums', {
-        url: '/albums',
-        templateUrl: '/albums.html',
+      .state('myalbums', {
+        url: '/myalbums',
+        templateUrl: '/myalbums.html',
         controller: 'AlbumCtrl',
         onEnter: ['$state', 'auth', function($state, auth){
           if(!auth.isLoggedIn()){
@@ -53,6 +53,17 @@ app.config([
         resolve: {
           postPromise: ['albums', function(albums) {
             return albums.getAll();
+          }]
+        }
+      })
+
+      .state('albums', { 
+        url:'/albums/{id}',
+        templateUrl: '/albums.html',
+        controller: 'AlbumCtrl',
+        resolve: {
+          post: ['$stateParams', 'albums', function($stateParams, albums) {
+            return albums.get($stateParams.id);
           }]
         }
       });
