@@ -9,6 +9,20 @@ app.controller('AlbumCtrl', [
     
     $scope.album = albums.currentAlbum;
 
-    $('#editToggle').bootstrapToggle();
+    jQuery('#editToggle').bootstrapToggle();
+
+    //$scope.editMode = jQuery('#editToggle').prop('checked');
+
+    /*$scope.isEditMode = function(){
+      var editMode = $('#editToggle').prop('checked');
+      return editMode;
+    };*/
+
+    $('#editToggle').change(function() {
+      $scope.$apply(function() {
+        $scope.isEditMode = $('#editToggle').prop('checked');
+      });
+    });
+
   }
 ]);
