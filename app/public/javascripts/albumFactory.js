@@ -5,7 +5,7 @@ function($http, auth){
 
   var o = {
     albums: [],
-    currentAlbum: null
+    currentAlbum:{}
   };
 
   o.getAll = function() {

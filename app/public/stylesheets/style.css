@@ -26,3 +26,11 @@ body {
     margin-right: 0;
   }
 }
+
+.toggle-handle {
+  background: #FFFFFF;
+}
+
+.toggle-off {
+  background: #9E9E9E;
+}

@@ -44,7 +44,7 @@ app.config([
       .state('myalbums', {
         url: '/myalbums',
         templateUrl: '/myalbums.html',
-        controller: 'AlbumCtrl',
+        controller: 'MyAlbumsCtrl',
         onEnter: ['$state', 'auth', function($state, auth){
           if(!auth.isLoggedIn()){
             $state.go('home');

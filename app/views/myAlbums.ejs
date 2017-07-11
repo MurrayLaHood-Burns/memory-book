@@ -1,7 +1,7 @@
 <br>
 <div ng-repeat="album in albums | orderBy: 'createdOn' ">
   <div class="d-flex justify-content-start p-2 separator-bottom">
-    <h3>{{album.title}}</h3>
+    <a href="/#/albums/{{album._id}}"><h3>>{{album.title}}</h3></a>
     <button class="btn btn-primary ml-auto">
       <i class="fa fa-pencil"></i>
       Edit 

@@ -7,16 +7,8 @@ app.controller('AlbumCtrl', [
 
   function($scope, auth, albums) {
     
-    $scope.albums = albums.albums;
-    $scope.currentAlbum = albums.currentAlbum;
-    
-    $scope.createAlbum = function() {
-    
-      if(!$scope.title || $scope.title === '') { return; }
-      albums.create({
-        title: $scope.title
-      });
-      $scope.title = '';
-    };
+    $scope.album = albums.currentAlbum;
+
+    $('#editToggle').bootstrapToggle();
   }
 ]);
