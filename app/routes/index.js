@@ -99,15 +99,22 @@ router.post('/register', function(req, res, next) {
 
 /* POST sign in */
 router.post('/login', function(req, res, next){
+  var logTag = '[' + shortid.generate() + '] POST /login';
+
   if(!req.body.username || !req.body.password){
+    logger.warn(logTag, {message: 'Please fill out all fields'});
     return res.status(400).json({message: 'Please fill out all fields'});
   }
 
   passport.authenticate('local', function(err, user, info){
 
-    if(err){ return next(err); }
+    if(err){ 
+      logger.error(logTag, {error: err});
+      return next(err); }
 
-    if(!user){ return res.status(401).json(info); }
+    if(!user){ 
+      logger.warn(logTag, info);
+      return res.status(401).json(info); }
 
     return res.json({token: user.generateJWT()});
   })(req, res, next);

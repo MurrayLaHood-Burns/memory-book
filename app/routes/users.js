@@ -8,15 +8,6 @@ var fs = require('fs');
 var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'});
 var debug = require('debug')('memory-book:server');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  User.find(function(err, users){
-    if(err){ return next(err); }
-
-    res.json(users);
-  });
-});
-
 /* PARAM user */
 router.param('user', function(req, res, next, username){
   var query = User.findOne({'username':username});

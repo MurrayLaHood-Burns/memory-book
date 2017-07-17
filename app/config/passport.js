@@ -2,14 +2,14 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-var winstons = require('winston');
+var logger = require('logger');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
     User.findOne({ username: username }, function (err, user) {
 
       if (err) {
-        winston.log('warn', 'Passport did not find user', {
+        logger.warn('Passport did not find user', {
           username: username,
           error: error,
         });
