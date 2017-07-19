@@ -7,30 +7,21 @@ var User = mongoose.model('User');
 var Album = mongoose.model('Album');
 var fixtures = require('pow-mongodb-fixtures').connect('memory-book-test');
 var constants = require('./helpers/constants');
+var helpers = require('./helpers/helpers');
 
 describe('User Routes', function() {
 
   var authHeader;
 
-  beforeEach(function(done) {
-    fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
-      if(err) throw err;
-      done();
-    });
-  });
-
   describe('POST /:user/albums', function(){
 
     before(function(done) {
-      request.post('/login')
-      .send({
-        username: 'alex',
-        password: constants.password
-      })
-      .end(function(err, res) {
-        if (err) throw err;
-        authHeader = 'Bearer ' + res.body.token;
-        done();
+      fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
+        if(err) throw err;
+        helpers.login( 'alex', function(bearerToken){
+          authHeader = bearerToken;
+          done();
+        });
       });
     });
 
@@ -51,15 +42,12 @@ describe('User Routes', function() {
   describe('GET /:user/albums', function(){
 
     before(function(done) {
-      request.post('/login')
-      .send({
-        username: 'alex',
-        password: constants.password
-      })
-      .end(function(err, res) {
-        if (err) throw err;
-        authHeader = 'Bearer ' + res.body.token;
-        done();
+      fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
+        if(err) throw err;
+        helpers.login( 'alex', function(bearerToken){
+          authHeader = bearerToken;
+          done();
+        });
       });
     });
 
@@ -69,21 +57,19 @@ describe('User Routes', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
+        console.log(res.body);
         res.body.should.be.empty;
         done();
       });
     });
 
     before(function(done) {
-      request.post('/login')
-      .send({
-        username: 'beatrice',
-        password: constants.password
-      })
-      .end(function(err, res) {
-        if (err) throw err;
-        authHeader = 'Bearer ' + res.body.token;
-        done();
+      fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
+        if(err) throw err;
+        helpers.login( 'beatrice', function(bearerToken){
+          authHeader = bearerToken;
+          done();
+        });
       });
     });
 
@@ -93,21 +79,19 @@ describe('User Routes', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
+        console.log(res.body);
         res.body.should.have.a.length(1);
         done();
       });
     });
 
     before(function(done) {
-      request.post('/login')
-      .send({
-        username: 'colin',
-        password: constants.password
-      })
-      .end(function(err, res) {
-        if (err) throw err;
-        authHeader = 'Bearer ' + res.body.token;
-        done();
+      fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
+        if(err) throw err;
+        helpers.login( 'colin', function(bearerToken){
+          authHeader = bearerToken;
+          done();
+        });
       });
     });
 
@@ -117,6 +101,7 @@ describe('User Routes', function() {
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
+        console.log(res.body);
         res.body.should.have.a.length(2);
         done();
       });

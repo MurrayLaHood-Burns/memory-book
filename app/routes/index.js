@@ -9,6 +9,7 @@ var fs = require('fs');
 var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'});
 var router = express.Router();
 var logger = require('logger');
+var messages = require('messages');
 
 
 /* GET home page. */
@@ -23,56 +24,51 @@ router.get('/', function(req, res, next) {
 
 /* POST sign up */
 router.post('/register', function(req, res, next) {
-  var logTag = '[' +  shortid.generate() + '] POST /register';
 
   // error check fields
   if(!validate.username(req.body.username)){
-    logger.warn(logTag, 'Invalid username', {
+    logger.warn(req.logTag, messages.usage.username, {
       username: req.body.username
     });
 
-    return res.status(400).json({message: 'Username must be 3-24 characters long and may only contain letters and numbers'});
+    return res.status(400).json(messages.usage.username);
   }
 
   if(!validate.email(req.body.email)){
-    logger.warn(logTag, 'Invalid email', {
+    logger.warn(req.logTag, messages.usage.email, {
       email: req.body.email
     });
 
-    return res.status(400).json({message: 'Invalid email address'});
+    return res.status(400).json(messages.usage.email);
   }
 
   if(!validate.password(req.body.password)){
-    logger.warn(logTag, 'Invalid password');
+    logger.warn(req.logTag, messages.usage.password);
 
-    return res.status(400).json({message: 'Password must be 4-128 characters long'});
+    return res.status(400).json(messages.usage.password);
   }
 
   User.findOne({$or: [{ 'username' : req.body.username},{'email' : req.body.email}]}, function(err, user){
     if(err){
-      logger.error(logTag, {error: err});
-      return res.status(400).json({message: 'We\'re having trouble handling your request, please try again later'});
+      logger.error(req.logTag, {error: err});
+      return res.status(400).json(messages.error.unknown);
     }
     if(user){
       if(user.username === req.body.username){
-        logger.warn(logTag, 'Sorry! Username ' + req.body.username + ' is taken', {
-          username : user.username
-        });
+        logger.warn(req.logTag, messages.conflict.username(req.body.username));
 
-        return res.status(400).json({message: 'Sorry! Username ' + req.body.username + ' is taken'});
+        return res.status(400).json(messages.conflict.username(req.body.username));
       } else if(user.email === req.body.email){
-        logger.warn(logTag, req.body.email + ' is already being used', {
-          email : user.email
-        });
+        logger.warn(req.logTag, messages.conflict.email(req.body.email));
 
-        return res.status(400).json({message: req.body.email + ' is already being used'});
+        return res.status(400).json(messages.conflict.email(req.body.email));
       } else {
-        logger.error(logTag, 'what?', {
+        logger.error(req.logTag, 'what?', {
           username: user.username,
           email: user.email
         });
 
-        return res.status(400).json({message: 'We\'re having trouble handling your request, please try again later'});
+        return res.status(400).json(messages.error.unknown);
       }
     }
   
@@ -84,13 +80,11 @@ router.post('/register', function(req, res, next) {
   
     user.save(function (err){
       if(err){
-        logger.error(logTag, {error: err});
-        return res.status(400).json({message: 'We\'re having trouble handling your request, please try again later'});
+        logger.error(req.logTag, {error: err});
+        return res.status(400).json(messages.error.unknown);
       }
 
-      logger.info(logTag, 'New user registered!', {
-        username : user.username
-      });
+      logger.info(req.logTag, messages.success.newUser(user.username));
 
       return res.json({token: user.generateJWT()});
     })
@@ -99,21 +93,20 @@ router.post('/register', function(req, res, next) {
 
 /* POST sign in */
 router.post('/login', function(req, res, next){
-  var logTag = '[' + shortid.generate() + '] POST /login';
 
   if(!req.body.username || !req.body.password){
-    logger.warn(logTag, {message: 'Please fill out all fields'});
-    return res.status(400).json({message: 'Please fill out all fields'});
+    logger.warn(req.logTag, messages.usage.missingFields);
+    return res.status(400).json(messages.usage.missingFields);
   }
 
   passport.authenticate('local', function(err, user, info){
 
     if(err){ 
-      logger.error(logTag, {error: err});
+      logger.error(req.logTag, {error: err});
       return next(err); }
 
     if(!user){ 
-      logger.warn(logTag, info);
+      logger.warn(req.logTag, info);
       return res.status(401).json(info); }
 
     return res.json({token: user.generateJWT()});
