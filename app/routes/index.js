@@ -3,7 +3,6 @@ var jwt = require('express-jwt');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var validate = require('validate');
-var shortid = require('shortid');
 var User = mongoose.model('User');
 var fs = require('fs');
 var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'});

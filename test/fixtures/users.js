@@ -13,7 +13,7 @@ exports.users = {
     _id: id('user_beat___'),
     username: 'beatrice',
     email: 'beatrice@test.com',
-    albums: ['albu_beat1__'],
+    albums: [id('albu_beat1__')],
     salt: constants.salt,
     hash: constants.hash
 
@@ -22,7 +22,7 @@ exports.users = {
     _id: id('user_coli___'),
     username: 'colin',
     email: 'colin@test.com',
-    albums: ['albu_coli1__', 'albu_coli2__'],
+    albums: [id('albu_coli1__'), id('albu_coli2__')],
     salt: constants.salt,
     hash: constants.hash
   }/*,

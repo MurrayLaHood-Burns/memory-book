@@ -11,33 +11,29 @@ var logger = require('logger');
 
 /* PARAM user */
 router.param('user', function(req, res, next, username){
-  var logTag = '[' +  shortid.generate() + '] PARAM /:user';
-
   var query = User.findOne({'username':username});
 
   query.exec(function (err, user){
     if(err) { 
-      logger.error(logTag, err);
+      logger.error(req.logTag, err);
       return next(err); }
     if(!user) { 
       var err = new Error('can\'t find user');
-      logger.error(logTag, err);
+      logger.error(req.logTag, err);
       return next(err);
     }
 
     req.user = user;
-    return next();
+    
+    next();
   });
 });
 
 /* POST new album */
 router.post('/:user/albums', auth, function(req, res, next) {
-  var logTag = '[' +  shortid.generate() + '] POST /:user/albums';
-
 
   if(req.user.username != req.payload.username){
-    var err = new Error('permission denied');
-    logger.error(logTag, err);
+    logger.error(req.logTag, messages.error.unauthorized);
     return next(err);
   }
 
@@ -46,11 +42,11 @@ router.post('/:user/albums', auth, function(req, res, next) {
   album.createdBy = req.user;
 
   album.save(function(err, album){
-    if(err){ debug(err); return next(err); }
+    if(err){ logger.error(req.logTag, err); return next(err); }
 
     req.user.albums.push(album);
     req.user.save(function(err, user) {
-      if(err){debug(err); return next(err); }
+      if(err){ logger.error(req.logTag, err); return next(err); }
 
       res.json(album);
     });
@@ -59,9 +55,9 @@ router.post('/:user/albums', auth, function(req, res, next) {
 
 /* GET albums */
 router.get('/:user/albums', auth, function(req, res, next) {
-  var logTag = '[' +  shortid.generate() + '] POST /:user/albums';
+
   Album.find({'createdBy' : req.user._id}, function(err, albums){
-    if(err) {debug(err); return next(err); }
+    if(err) { logger.error(req.logTag, err); return next(err); }
 
     res.json(albums);
   });
