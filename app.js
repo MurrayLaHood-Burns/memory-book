@@ -70,6 +70,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-logger.info(app.get('env'));
-
 module.exports = app;

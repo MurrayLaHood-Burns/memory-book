@@ -51,7 +51,7 @@ router.post('/register', function(req, res, next) {
   User.findOne({$or: [{ 'username' : req.body.username},{'email' : req.body.email}]}, function(err, user){
     if(err){
       logger.error(req.logTag, {error: err});
-      return res.status(400).json(messages.error.unknown);
+      return res.status(500).json(messages.error.unknown);
     }
     if(user){
       if(user.username === req.body.username){
@@ -68,7 +68,7 @@ router.post('/register', function(req, res, next) {
           email: user.email
         });
 
-        return res.status(400).json(messages.error.unknown);
+        return res.status(500).json(messages.error.unknown);
       }
     }
   
@@ -81,7 +81,7 @@ router.post('/register', function(req, res, next) {
     user.save(function (err){
       if(err){
         logger.error(req.logTag, {error: err});
-        return res.status(400).json(messages.error.unknown);
+        return res.status(500).json(messages.error.unknown);
       }
 
       logger.info(req.logTag, messages.success.newUser(user.username));
@@ -103,7 +103,7 @@ router.post('/login', function(req, res, next){
 
     if(err){ 
       logger.error(req.logTag, {error: err});
-      return next(err); }
+      return res.status(500).json(messages.error.unknown) }
 
     if(!user){ 
       logger.warn(req.logTag, info);
