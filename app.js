@@ -1,13 +1,12 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
-var debug = require('debug')('memory-book:server');
 var logger = require('./app/node_modules/logger');
+var messages = require('./app/node_modules/messages');
 
 // database setup
 
@@ -56,6 +55,16 @@ app.use('/albums', albums);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
+  next(err);
+});
+
+// catch unkown errors
+app.use(function(err, req, res, next) {
+  if(req.app.get('env') !== 'dev')
+  {
+    logger.error(req.logTag, err);
+    return res.status(500).json(messages.error.unknown)
+  }
   next(err);
 });
 

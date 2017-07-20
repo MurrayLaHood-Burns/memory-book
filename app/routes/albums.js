@@ -9,28 +9,6 @@ var debug = require('debug')('memory-book:server');
 var router = express.Router();
 var filters = require('filters');
 
-/* GET albums for user */
-router.get('/', function(req, res, next) {
-  Album.find(function(err, albums){
-    if(err){ return next(err); }
-
-    res.json(albums);
-  });
-});
-
-/* POST new album /
-router.post('/', auth, function(req, res, next) {
-  var query = User.find({'username' : req.payload.username});
-
-  query.exec(function (err, user){
-    if(err) { return next(err); }
-    if(!user) { return next(new Error('User not in database')); }
-
-    var album = new Album(req.body);
-    album.createdBy = 
-
-}*/
-
 /* PARAM album */
 router.param('album', function(req, res, next, id){
   var query = Album.findById(id);
@@ -40,7 +18,8 @@ router.param('album', function(req, res, next, id){
     if(!album) { return next(new Error('can\'t find album')); }
 
     req.album = album;
-    return next();
+    
+    next();
   });
 });
 
@@ -59,7 +38,7 @@ router.put('/:album/tags', function(req, res, next) {
     .filter(filters.onlyUnique);
 
   req.album.save(function(err, album) {
-    if(err){ return next(err); }
+    if(err){ logger.error(req.logTag, err); return next(err); }
 
     res.json(album.tags);
   });

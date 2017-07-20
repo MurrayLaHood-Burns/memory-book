@@ -13,11 +13,6 @@ var messages = require('messages');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  logger.verbose('GET /', {
-    body: req.body
-  });
-
-
   res.render('index');
 });
 
@@ -47,11 +42,11 @@ router.post('/register', function(req, res, next) {
     return res.status(400).json(messages.usage.password);
   }
 
+  next();
+}, function(req, res, next) {
+
   User.findOne({$or: [{ 'username' : req.body.username},{'email' : req.body.email}]}, function(err, user){
-    if(err){
-      logger.error(req.logTag, {error: err});
-      return res.status(500).json(messages.error.unknown);
-    }
+    if(err) { return next(err); }
     if(user){
       if(user.username === req.body.username){
         logger.warn(req.logTag, messages.conflict.username(req.body.username));
@@ -62,31 +57,27 @@ router.post('/register', function(req, res, next) {
 
         return res.status(400).json(messages.conflict.email(req.body.email));
       } else {
-        logger.error(req.logTag, 'what?', {
-          username: user.username,
-          email: user.email
-        });
-
-        return res.status(500).json(messages.error.unknown);
+        err = new Error('This shouldn\'t happen. ' + user);
+        return next(err);
       }
     }
+
+    next();
+  });
+}, function(req, res, next) {
+
+  var user = new User();
+
+  user.username = req.body.username;
+  user.email = req.body.email;
+  user.setPassword(req.body.password);
   
-    var user = new User();
+  user.save(function (err){
+    if(err){ return next(err); }
 
-    user.username = req.body.username;
-    user.email = req.body.email;
-    user.setPassword(req.body.password);
-  
-    user.save(function (err){
-      if(err){
-        logger.error(req.logTag, {error: err});
-        return res.status(500).json(messages.error.unknown);
-      }
+    logger.info(req.logTag, messages.success.newUser(user.username));
 
-      logger.info(req.logTag, messages.success.newUser(user.username));
-
-      return res.json({token: user.generateJWT()});
-    })
+    return res.json({token: user.generateJWT()});
   })
 });
 
@@ -100,9 +91,7 @@ router.post('/login', function(req, res, next){
 
   passport.authenticate('local', function(err, user, info){
 
-    if(err){ 
-      logger.error(req.logTag, {error: err});
-      return res.status(500).json(messages.error.unknown) }
+    if(err){ return next(err); }
 
     if(!user){ 
       logger.warn(req.logTag, info);

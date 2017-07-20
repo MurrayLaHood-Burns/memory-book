@@ -3,6 +3,7 @@ node_modules/*
 *.swp
 *.swo
 *.swn
+*.swm
 .jwt-key
 memories-dev
 memories-live
