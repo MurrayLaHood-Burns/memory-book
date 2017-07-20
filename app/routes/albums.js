@@ -8,6 +8,7 @@ var auth = jwt({secret: fs.readFileSync('.jwt-key/key'), userProperty: 'payload'
 var debug = require('debug')('memory-book:server');
 var router = express.Router();
 var filters = require('filters');
+var verify = require('verify');
 
 /* PARAM album */
 router.param('album', function(req, res, next, id){
@@ -15,7 +16,9 @@ router.param('album', function(req, res, next, id){
 
   query.exec(function (err, album){
     if(err) { return next(err); }
-    if(!album) { return next(new Error('can\'t find album')); }
+    if(!album) { 
+      logger.log(req.logTag, messages.error.albumNotFound, {_id: id});
+    }
 
     req.album = album;
     
@@ -29,7 +32,9 @@ router.get('/:album', function(req, res) {
 });
 
 /* PUT album tags */
-router.put('/:album/tags', function(req, res, next) {
+router.put('/:album/tags', auth, verify.owner(), function(req, res, next) {
+
+  
 
   req.album.tags = req.album.tags.concat(req.body.tags)
     .filter(filters.notNull)
@@ -38,7 +43,7 @@ router.put('/:album/tags', function(req, res, next) {
     .filter(filters.onlyUnique);
 
   req.album.save(function(err, album) {
-    if(err){ logger.error(req.logTag, err); return next(err); }
+    if(err){ return next(err); }
 
     res.json(album.tags);
   });
