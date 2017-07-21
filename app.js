@@ -63,7 +63,7 @@ app.use(function(err, req, res, next) {
   if(req.app.get('env') !== 'dev')
   {
     logger.error(req.logTag, err);
-    return res.status(500).json(messages.error.unknown)
+    return res.status(500).json(messages.error.unknow);
   }
   next(err);
 });

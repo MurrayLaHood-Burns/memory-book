@@ -8,6 +8,7 @@ var Album = mongoose.model('Album');
 var fixtures = require('pow-mongodb-fixtures').connect('memory-book-test');
 var constants = require('./helpers/constants');
 var helpers = require('./helpers/helpers');
+var messages = require('../app/node_modules/messages');
 
 describe('User Routes', function() {
 
@@ -35,6 +36,32 @@ describe('User Routes', function() {
         if (err) throw err;
         res.body.should.have.property('title', 'testAlbum');
         done();
+      });
+    });
+
+    describe('Requires owner', function(){
+
+      before(function(done) {
+        fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
+          if(err) throw err;
+          helpers.login( 'beatrice', function(bearerToken){
+            authHeader = bearerToken;
+            done();
+          });
+        });
+      });
+
+      it('requires owner', function(done){
+        request.post('/users/alex/albums')
+        .send({
+          title: 'testAlbum'})
+        .set('authorization', authHeader)
+        .expect(401)
+        .end(function(err, res) {
+          if (err) throw err;
+          res.body.should.have.property('message', messages.error.unauthorized.message);
+          done();
+        });
       });
     });
   });

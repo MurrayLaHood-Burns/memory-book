@@ -12,16 +12,12 @@ var logger = require('logger');
 
 /* PARAM user */
 router.param('user', function(req, res, next, username){
-  console.log('param');
-  
   var query = User.findOne({'username':username});
 
   query.exec(function (err, user){
     if(err) { return next(err); }
     if(!user) { 
-      var err = new Error('can\'t find user');
-      logger.error(req.logTag, err);
-      return next(err);
+      return next(new Error('Can\'t find user'));
     }
 
     req.user = user;
@@ -33,7 +29,6 @@ router.param('user', function(req, res, next, username){
 
 /* POST new album */
 router.post('/:user/albums', auth, verify.owner(), function(req, res, next) {
-  console.log('post');
   var album = new Album(req.body);
 
   album.createdBy = req.user;
