@@ -57,8 +57,7 @@ router.post('/register', function(req, res, next) {
 
         return res.status(400).json(messages.conflict.email(req.body.email));
       } else {
-        err = new Error('This shouldn\'t happen. ' + user);
-        return next(err);
+        return next(new Error('This shouldn\'t happen. ' + user));
       }
     }
 
