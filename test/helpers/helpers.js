@@ -3,6 +3,7 @@ var request = require('supertest')(app);
 var constants = require('./constants');
 
 var helpers = {
+
   login: function( username, callback ){
     request.post('/login')
     .send({

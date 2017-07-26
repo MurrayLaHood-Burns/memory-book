@@ -6,23 +6,50 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Album = mongoose.model('Album');
 var fixtures = require('pow-mongodb-fixtures').connect('memory-book-test');
-var constants = require('./helpers/constants');
 var helpers = require('./helpers/helpers');
 var messages = require('../app/node_modules/messages');
 
 describe('User Routes', function() {
 
-  var authHeader;
+  var alexAuth;
+  var beatriceAuth;
+  var colinAuth;
+
+  before(function(done) {
+    fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
+      if(err) throw err;
+      done();
+    });
+  });
+
+  before(function(done) {
+    helpers.login( 'alex', function(authHeader){
+      alexAuth = authHeader;
+      done();
+    });
+  });
+  
+  before(function(done) {
+    helpers.login( 'beatrice', function(authHeader){
+      beatriceAuth = authHeader;
+      done();
+    });
+  });
+  
+
+  before(function(done) {
+    helpers.login( 'colin', function(authHeader){
+      colinAuth = authHeader;
+      done();
+    });
+  }); 
 
   describe('POST /:user/albums', function(){
 
-    before(function(done) {
+    beforeEach(function(done) {
       fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
         if(err) throw err;
-        helpers.login( 'alex', function(bearerToken){
-          authHeader = bearerToken;
-          done();
-        });
+        done();
       });
     });
 
@@ -30,7 +57,7 @@ describe('User Routes', function() {
       request.post('/users/alex/albums')
       .send({
         title: 'testAlbum'})
-      .set('authorization', authHeader)
+      .set('authorization', alexAuth)
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
@@ -39,48 +66,32 @@ describe('User Routes', function() {
       });
     });
 
-    describe('Requires owner', function(){
-
-      before(function(done) {
-        fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
-          if(err) throw err;
-          helpers.login( 'beatrice', function(bearerToken){
-            authHeader = bearerToken;
-            done();
-          });
-        });
-      });
-
-      it('requires owner', function(done){
-        request.post('/users/alex/albums')
-        .send({
-          title: 'testAlbum'})
-        .set('authorization', authHeader)
-        .expect(401)
-        .end(function(err, res) {
-          if (err) throw err;
-          res.body.should.have.property('message', messages.error.unauthorized.message);
-          done();
-        });
+    it('requires owner', function(done){
+      request.post('/users/alex/albums')
+      .send({
+        title: 'testAlbum'})
+      .set('authorization', beatriceAuth)
+      .expect(401)
+      .end(function(err, res) {
+        if (err) throw err;
+        res.body.should.have.property('message', messages.error.unauthorized.message);
+        done();
       });
     });
   });
 
   describe('GET /:user/albums', function(){
 
-    before(function(done) {
+    beforeEach(function(done) {
       fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
         if(err) throw err;
-        helpers.login( 'alex', function(bearerToken){
-          authHeader = bearerToken;
-          done();
-        });
+        done();
       });
     });
 
     it('return empty if none found', function(done) {
       request.get('/users/alex/albums')
-      .set('authorization', authHeader)
+      .set('authorization', alexAuth)
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
@@ -89,19 +100,9 @@ describe('User Routes', function() {
       });
     });
 
-    before(function(done) {
-      fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
-        if(err) throw err;
-        helpers.login( 'beatrice', function(bearerToken){
-          authHeader = bearerToken;
-          done();
-        });
-      });
-    });
-
     it('returns a list if one found', function(done) {
       request.get('/users/beatrice/albums')
-      .set('authorization', authHeader)
+      .set('authorization', beatriceAuth)
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
@@ -110,19 +111,9 @@ describe('User Routes', function() {
       });
     });
 
-    before(function(done) {
-      fixtures.clearAllAndLoad(__dirname + '/fixtures', function(err){
-        if(err) throw err;
-        helpers.login( 'colin', function(bearerToken){
-          authHeader = bearerToken;
-          done();
-        });
-      });
-    });
-
     it('returns a list if multiple found', function(done) {
       request.get('/users/colin/albums')
-      .set('authorization', authHeader)
+      .set('authorization', colinAuth)
       .expect(200)
       .end(function(err, res) {
         if (err) throw err;
@@ -130,7 +121,5 @@ describe('User Routes', function() {
         done();
       });
     });
-
-
   });
 });
